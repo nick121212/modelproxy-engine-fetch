@@ -1,0 +1,21 @@
+{
+  "name": "modelproxy-engine-fetch",
+  "version": "0.7.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "publish-please": "publish-please",
+    "prepublish": "publish-please guard"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "isomorphic-fetch": "^2.2.1",
+    "modelproxy": "^0.7.0"
+  },
+  "devDependencies": {
+    "@types/isomorphic-fetch": "0.0.34",
+    "publish-please": "^2.3.1"
+  }
+}
