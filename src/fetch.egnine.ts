@@ -6,7 +6,7 @@ import fetch from "isomorphic-fetch";
 
 import { fetchDec } from "./fetch.decorator";
 
-export class ReactFetchEngine extends BaseEngine {
+export class FetchEngine extends BaseEngine {
     constructor() {
         super();
     }
