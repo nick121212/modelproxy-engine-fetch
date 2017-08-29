@@ -2,15 +2,11 @@ import { ModelProxy, BaseEngine } from "modelproxy";
 import { IProxyCtx } from "modelproxy/out/models/proxyctx";
 import { IInterfaceModel } from "modelproxy/out/models/interface";
 
-import fetch from "isomorphic-fetch";
+import * as fetch from "isomorphic-fetch";
 
 import { fetchDec } from "./fetch.decorator";
 
 export class FetchEngine extends BaseEngine {
-    constructor() {
-        super();
-    }
-
     /**
      * 初始化中间件
      * 处理参数params，data，header等数据

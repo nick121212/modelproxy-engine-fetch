@@ -1,6 +1,6 @@
 {
   "name": "modelproxy-engine-fetch",
-  "version": "0.7.22",
+  "version": "0.7.23",
   "description": "",
   "main": "out/fetch.engine.js",
   "scripts": {
@@ -8,15 +8,14 @@
     "publish-please": "publish-please",
     "prepublish": "publish-please guard"
   },
-  "types":"out/fetch.egnine.d.ts",
+  "types": "out/fetch.egnine.d.ts",
   "author": "",
   "license": "ISC",
-  "dependencies": {
-    "isomorphic-fetch": "^2.2.1",
-    "modelproxy": "^0.7.0"
-  },
+  "dependencies": {},
   "devDependencies": {
     "@types/isomorphic-fetch": "0.0.34",
-    "publish-please": "^2.3.1"
+    "publish-please": "^2.3.1",
+    "isomorphic-fetch": "^2.2.1",
+    "modelproxy": "^0.7.0"
   }
 }

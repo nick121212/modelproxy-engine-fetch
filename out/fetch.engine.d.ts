@@ -1,7 +1,6 @@
 import { BaseEngine } from "modelproxy";
 import { IInterfaceModel } from "modelproxy/out/models/interface";
 export declare class FetchEngine extends BaseEngine {
-    constructor();
     /**
      * 初始化中间件
      * 处理参数params，data，header等数据

@@ -46,12 +46,12 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var modelproxy_1 = require("modelproxy");
-var isomorphic_fetch_1 = require("isomorphic-fetch");
+var fetch = require("isomorphic-fetch");
 var fetch_decorator_1 = require("./fetch.decorator");
 var FetchEngine = (function (_super) {
     __extends(FetchEngine, _super);
     function FetchEngine() {
-        return _super.call(this) || this;
+        return _super !== null && _super.apply(this, arguments) || this;
     }
     /**
      * 初始化中间件
@@ -99,7 +99,7 @@ var FetchEngine = (function (_super) {
                         }
                         // 发送请求
                         _g = ctx;
-                        return [4 /*yield*/, fetch_decorator_1.fetchDec(isomorphic_fetch_1.default(this.getFullPath(instance, executeInfo), {
+                        return [4 /*yield*/, fetch_decorator_1.fetchDec(fetch(this.getFullPath(instance, executeInfo), {
                                 body: ["GET", "OPTIONS", "HEAD"].indexOf(instance.method.toUpperCase()) === -1 ? body : null,
                                 credentials: "same-origin",
                                 headers: headers,
