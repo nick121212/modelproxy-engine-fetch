@@ -4,9 +4,9 @@
 
 ## demo
 
-```javascript
+```typescript
 
-    import { FetchEngine } from 'odelproxy-engine-fetch';
+    import { FetchEngine } from 'modelproxy-engine-fetch';
 
     const reactEngine = new FetchEngine();
 
