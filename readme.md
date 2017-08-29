@@ -10,6 +10,7 @@
 
     const reactEngine = new FetchEngine();
 
+    reactEngine.init();
     /**
     * 请求真正的数据接口
     * 判断http的状态码，如果不是200，直接抛出错误
