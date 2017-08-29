@@ -1,6 +1,6 @@
 {
   "name": "modelproxy-engine-fetch",
-  "version": "0.7.22,
+  "version": "0.7.22",
   "description": "",
   "main": "out/fetch.engine.js",
   "scripts": {
