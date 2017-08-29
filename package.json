@@ -2,12 +2,13 @@
   "name": "modelproxy-engine-fetch",
   "version": "0.7.0",
   "description": "",
-  "main": "index.js",
+  "main": "out/fetch.engine.js",
   "scripts": {
     "test": "echo \"Error: no test specified\"",
     "publish-please": "publish-please",
     "prepublish": "publish-please guard"
   },
+  "types":"out/fetch.egnine.d.ts",
   "author": "",
   "license": "ISC",
   "dependencies": {

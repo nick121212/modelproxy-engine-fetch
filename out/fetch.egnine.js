@@ -46,34 +46,18 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var modelproxy_1 = require("modelproxy");
-// import fetch from "isomorphic-fetch";
-var _fetch = function (fetchPromise, timeout) {
-    var abortFn;
-    var abortPromise = new Promise(function (resolve, reject) {
-        abortFn = function () {
-            reject(new Error("timeout\uFF08" + timeout + "\uFF09"));
-        };
-    });
-    var abortablePromise = Promise.race([
-        fetchPromise,
-        abortPromise
-    ]);
-    var timeid = setTimeout(function () {
-        abortFn();
-    }, timeout);
-    abortablePromise.then(function () {
-        clearTimeout(timeid);
-    }, function () {
-        clearTimeout(timeid);
-    });
-    return abortablePromise;
-};
-var ReactFetchEngine = (function (_super) {
-    __extends(ReactFetchEngine, _super);
-    function ReactFetchEngine() {
+var isomorphic_fetch_1 = require("isomorphic-fetch");
+var fetch_decorator_1 = require("./fetch.decorator");
+var FetchEngine = (function (_super) {
+    __extends(FetchEngine, _super);
+    function FetchEngine() {
         return _super.call(this) || this;
     }
-    ReactFetchEngine.prototype.init = function () {
+    /**
+     * 初始化中间件
+     * 处理参数params，data，header等数据
+     */
+    FetchEngine.prototype.init = function () {
         var _this = this;
         this.use(function (ctx, next) { return __awaiter(_this, void 0, void 0, function () {
             var formData, bodyParams, _a, executeInfo, _b, instance, body, headers, _c, _d, timeout, _e, originHeaders, _f, type, key, data, _g;
@@ -81,40 +65,31 @@ var ReactFetchEngine = (function (_super) {
                 switch (_h.label) {
                     case 0:
                         formData = new FormData();
-                        bodyParams = new modelproxy_1.URLSearchParams();
+                        bodyParams = new URLSearchParams();
                         _a = ctx.executeInfo, executeInfo = _a === void 0 ? {} : _a, _b = ctx.instance, instance = _b === void 0 ? {} : _b;
                         headers = { "X-Requested-With": "XMLHttpRequest" };
                         _c = executeInfo.settings || {}, _d = _c.timeout, timeout = _d === void 0 ? 5000 : _d, _e = _c.headers, originHeaders = _e === void 0 ? {} : _e, _f = _c.type, type = _f === void 0 ? "" : _f;
-                        // 处理设置
-                        if (!executeInfo.settings) {
-                            headers = Object.assign({}, headers, {
-                                "Accept": "application/json",
-                                "Content-Type": "application/json"
-                            });
-                            body = JSON.stringify(executeInfo.data || {});
+                        // 根据type来设置不同的header
+                        switch (type) {
+                            case "params":
+                                headers = Object.assign({}, {
+                                    "Accept": "application/json",
+                                    "Content-Type": "application/json"
+                                }, headers);
+                                body = bodyParams;
+                                break;
+                            case "formdata":
+                                body = formData;
+                                break;
+                            default:
+                                headers = Object.assign({}, {
+                                    "Accept": "application/json",
+                                    "Content-Type": "application/json"
+                                }, headers);
+                                body = JSON.stringify(executeInfo.data || {});
+                                break;
                         }
-                        else {
-                            switch (type) {
-                                case "params":
-                                    headers = Object.assign({}, {
-                                        "Accept": "application/json",
-                                        "Content-Type": "application/json"
-                                    }, headers);
-                                    body = bodyParams;
-                                    break;
-                                case "formdata":
-                                    body = formData;
-                                    break;
-                                default:
-                                    headers = Object.assign({}, {
-                                        "Accept": "application/json",
-                                        "Content-Type": "application/json"
-                                    }, headers);
-                                    body = JSON.stringify(executeInfo.data || {});
-                                    break;
-                            }
-                            headers = Object.assign({}, headers || {}, originHeaders);
-                        }
+                        headers = Object.assign({}, headers || {}, originHeaders);
                         for (key in executeInfo.data) {
                             if (executeInfo.data.hasOwnProperty(key)) {
                                 data = executeInfo.data[key];
@@ -124,7 +99,7 @@ var ReactFetchEngine = (function (_super) {
                         }
                         // 发送请求
                         _g = ctx;
-                        return [4 /*yield*/, _fetch(fetch(this.getFullPath(instance, executeInfo), {
+                        return [4 /*yield*/, fetch_decorator_1.fetchDec(isomorphic_fetch_1.default(this.getFullPath(instance, executeInfo), {
                                 body: ["GET", "OPTIONS", "HEAD"].indexOf(instance.method.toUpperCase()) === -1 ? body : null,
                                 credentials: "same-origin",
                                 headers: headers,
@@ -146,7 +121,7 @@ var ReactFetchEngine = (function (_super) {
      * @param instance 接口的信息
      * @param options  调用接口的参数
      */
-    ReactFetchEngine.prototype.proxy = function (instance, options) {
+    FetchEngine.prototype.proxy = function (instance, options) {
         return __awaiter(this, void 0, void 0, function () {
             var fn, ctx;
             return __generator(this, function (_a) {
@@ -170,7 +145,7 @@ var ReactFetchEngine = (function (_super) {
             });
         });
     };
-    return ReactFetchEngine;
+    return FetchEngine;
 }(modelproxy_1.BaseEngine));
-exports.ReactFetchEngine = ReactFetchEngine;
+exports.FetchEngine = FetchEngine;
 //# sourceMappingURL=fetch.egnine.js.map
