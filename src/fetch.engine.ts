@@ -17,7 +17,7 @@ export class FetchEngine extends BaseEngine {
             let bodyParams = new URLSearchParams();
             let { executeInfo = {}, instance = {} } = ctx;
             let body, headers: any = { "X-Requested-With": "XMLHttpRequest" };
-            let { timeout = 5000, headers: originHeaders = {}, type = "" } = executeInfo.settings || {};
+            let { timeout = 5000, headers: originHeaders = {}, type = "", fetch={} } = executeInfo.settings || {};
 
             // 根据type来设置不同的header
             switch (type) {
@@ -52,12 +52,12 @@ export class FetchEngine extends BaseEngine {
             }
 
             // 发送请求
-            ctx.result = await fetchDec(fetch(this.getFullPath(instance as any, executeInfo), {
+            ctx.result = await fetchDec(fetch(this.getFullPath(instance as any, executeInfo), Object.assign({},{
                 body: ["GET", "OPTIONS", "HEAD"].indexOf((instance.method as any).toUpperCase()) === -1 ? body : null,
                 credentials: "same-origin",
                 headers: headers,
                 method: instance.method as any,
-            }), timeout);
+            },fetch)), timeout);
 
             await next();
         });
