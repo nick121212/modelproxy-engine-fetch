@@ -8,23 +8,23 @@ Object.defineProperty(exports, "__esModule", { value: true });
  * @param fetchPromise fetch的promise
  * @param timeout 超时时间
  */
-exports.fetchDec = function (fetchPromise, timeout) {
-    var abortFn;
-    var abortPromise = new Promise(function (resolve, reject) {
-        abortFn = function () {
-            reject(new Error("timeout\uFF08" + timeout + "\uFF09"));
+exports.fetchDec = (fetchPromise, timeout) => {
+    let abortFn;
+    let abortPromise = new Promise((resolve, reject) => {
+        abortFn = () => {
+            reject(new Error(`timeout（${timeout}）`));
         };
     });
-    var abortablePromise = Promise.race([
+    let abortablePromise = Promise.race([
         fetchPromise,
         abortPromise
     ]);
-    var timeid = setTimeout(function () {
+    let timeid = setTimeout(() => {
         abortFn();
     }, timeout);
-    abortablePromise.then(function () {
+    abortablePromise.then(() => {
         clearTimeout(timeid);
-    }, function () {
+    }, () => {
         clearTimeout(timeid);
     });
     return abortablePromise;
