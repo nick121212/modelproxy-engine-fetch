@@ -9,6 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const modelproxy_1 = require("modelproxy");
+const fetch = require("isomorphic-fetch");
 const fetch_decorator_1 = require("./fetch.decorator");
 class FetchEngine extends modelproxy_1.BaseEngine {
     /**
@@ -21,7 +22,7 @@ class FetchEngine extends modelproxy_1.BaseEngine {
             let bodyParams = new URLSearchParams();
             let { executeInfo = {}, instance = {} } = ctx;
             let body, headers = { "X-Requested-With": "XMLHttpRequest" };
-            let { timeout = 5000, headers: originHeaders = {}, type = "", fetch = {} } = executeInfo.settings || {};
+            let { timeout = 5000, headers: originHeaders = {}, type = "", fetch: fetchOptions = {} } = executeInfo.settings || {};
             // 根据type来设置不同的header
             switch (type) {
                 case "params":
@@ -56,7 +57,7 @@ class FetchEngine extends modelproxy_1.BaseEngine {
                 credentials: "same-origin",
                 headers: headers,
                 method: instance.method,
-            }, fetch)), timeout);
+            }, fetchOptions)), timeout);
             yield next();
         }));
     }
