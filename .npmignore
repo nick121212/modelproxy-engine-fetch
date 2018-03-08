@@ -1,7 +1,8 @@
-.src
+src
 .gitignore
 tsconfig.json
 tslint.json
 node_modules
 .history
 .vscode
+tsconfig.json
