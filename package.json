@@ -9,7 +9,8 @@
     "prepublish": "publish-please guard"
   },
   "typings": "./out/fetch.egnine.d.ts",
-  "author": "",
+  "types": "./out/fetch.egnine.d.ts",
+  "author": "Nick",
   "license": "ISC",
   "dependencies": {},
   "devDependencies": {
