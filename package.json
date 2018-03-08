@@ -1,6 +1,6 @@
 {
   "name": "modelproxy-engine-fetch",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "",
   "main": "out/fetch.engine.js",
   "scripts": {
@@ -8,8 +8,8 @@
     "publish-please": "publish-please",
     "prepublish": "publish-please guard"
   },
-  "typings": "./out/fetch.egnine.d.ts",
-  "types": "./out/fetch.egnine.d.ts",
+  "typings": "./out/fetch.engine.d.ts",
+  "types": "./out/fetch.engine.d.ts",
   "author": "Nick",
   "license": "ISC",
   "dependencies": {},
