@@ -11,6 +11,10 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const modelproxy_1 = require("modelproxy");
 const fetch = require("isomorphic-fetch");
 const fetch_decorator_1 = require("./fetch.decorator");
+const defaultHeaders = {
+    "Accept": "application/json",
+    "Content-Type": "application/json"
+};
 class FetchEngine extends modelproxy_1.BaseEngine {
     /**
      * 初始化中间件
@@ -26,20 +30,14 @@ class FetchEngine extends modelproxy_1.BaseEngine {
             // 根据type来设置不同的header
             switch (type) {
                 case "params":
-                    headers = Object.assign({}, {
-                        "Accept": "application/json",
-                        "Content-Type": "application/json"
-                    }, headers);
+                    headers = Object.assign({}, defaultHeaders, headers);
                     body = bodyParams;
                     break;
                 case "formdata":
                     body = formData;
                     break;
                 default:
-                    headers = Object.assign({}, {
-                        "Accept": "application/json",
-                        "Content-Type": "application/json"
-                    }, headers);
+                    headers = Object.assign({}, defaultHeaders, headers);
                     body = JSON.stringify(executeInfo.data || {});
                     break;
             }

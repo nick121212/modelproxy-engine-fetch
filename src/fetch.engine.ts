@@ -6,6 +6,11 @@ import * as fetch from "isomorphic-fetch";
 
 import { fetchDec } from "./fetch.decorator";
 
+const defaultHeaders = {
+    "Accept": "application/json",
+    "Content-Type": "application/json"
+};
+
 export class FetchEngine extends BaseEngine {
     /**
      * 初始化中间件
@@ -18,24 +23,19 @@ export class FetchEngine extends BaseEngine {
             let { executeInfo = {}, instance = {} } = ctx;
             let body, headers: any = { "X-Requested-With": "XMLHttpRequest" };
             let { timeout = 5000, headers: originHeaders = {}, type = "", fetch: fetchOptions = {} } = executeInfo.settings || {};
+           
 
             // 根据type来设置不同的header
             switch (type) {
                 case "params":
-                    headers = Object.assign({}, {
-                        "Accept": "application/json",
-                        "Content-Type": "application/json"
-                    }, headers);
+                    headers = Object.assign({}, defaultHeaders, headers);
                     body = bodyParams;
                     break;
                 case "formdata":
                     body = formData;
                     break;
                 default:
-                    headers = Object.assign({}, {
-                        "Accept": "application/json",
-                        "Content-Type": "application/json"
-                    }, headers);
+                    headers = Object.assign({}, defaultHeaders, headers);
                     body = JSON.stringify(executeInfo.data || {});
                     break;
             }
