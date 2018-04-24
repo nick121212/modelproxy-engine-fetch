@@ -11,6 +11,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const modelproxy_1 = require("modelproxy");
 const fetch = require("isomorphic-fetch");
 const fetch_decorator_1 = require("./fetch.decorator");
+const fetch_cache_1 = require("./fetch.cache");
 const defaultHeaders = {
     "Accept": "application/json",
     "Content-Type": "application/json"
@@ -22,11 +23,7 @@ class FetchEngine extends modelproxy_1.BaseEngine {
      */
     init() {
         this.use((ctx, next) => __awaiter(this, void 0, void 0, function* () {
-            let formData = new FormData();
-            let bodyParams = new URLSearchParams();
-            let { executeInfo = {}, instance = {} } = ctx;
-            let body, headers = { "X-Requested-With": "XMLHttpRequest" };
-            let { timeout = 5000, headers: originHeaders = {}, type = "", fetch: fetchOptions = {} } = executeInfo.settings || {};
+            let formData = new FormData(), bodyParams = new URLSearchParams(), { executeInfo = {}, instance = {} } = ctx, body, headers = { "X-Requested-With": "XMLHttpRequest" }, { timeout = 5000, headers: originHeaders = {}, type = "", fetch: fetchOptions = {} } = executeInfo.settings || {}, fullPath = this.getFullPath(instance, executeInfo);
             // 根据type来设置不同的header
             switch (type) {
                 case "params":
@@ -49,13 +46,14 @@ class FetchEngine extends modelproxy_1.BaseEngine {
                     bodyParams.append(key, data);
                 }
             }
-            // 发送请求
-            ctx.result = yield fetch_decorator_1.fetchDec(fetch(this.getFullPath(instance, executeInfo), Object.assign({}, {
+            const fetchFunc = fetch.bind(fetch, fullPath, Object.assign({}, {
                 body: ["GET", "OPTIONS", "HEAD"].indexOf(instance.method.toUpperCase()) === -1 ? body : null,
                 credentials: "same-origin",
                 headers: headers,
                 method: instance.method,
-            }, fetchOptions)), timeout);
+            }, fetchOptions));
+            // 发送请求
+            ctx.result = yield fetch_decorator_1.fetchDec(fetch_cache_1.fetchCacheDec(fetchFunc, executeInfo, fullPath), timeout);
             yield next();
         }));
     }

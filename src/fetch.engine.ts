@@ -1,10 +1,10 @@
 import { ModelProxy, BaseEngine } from "modelproxy";
 import { IProxyCtx } from "modelproxy/out/models/proxyctx";
 import { IInterfaceModel } from "modelproxy/out/models/interface";
-
 import * as fetch from "isomorphic-fetch";
 
 import { fetchDec } from "./fetch.decorator";
+import { fetchCacheDec } from "./fetch.cache";
 
 const defaultHeaders = {
     "Accept": "application/json",
@@ -18,12 +18,12 @@ export class FetchEngine extends BaseEngine {
      */
     public init(): void {
         this.use(async (ctx: IProxyCtx, next: Function) => {
-            let formData = new FormData();
-            let bodyParams = new URLSearchParams();
-            let { executeInfo = {}, instance = {} } = ctx;
-            let body, headers: any = { "X-Requested-With": "XMLHttpRequest" };
-            let { timeout = 5000, headers: originHeaders = {}, type = "", fetch: fetchOptions = {} } = executeInfo.settings || {};
-           
+            let formData = new FormData(),
+                bodyParams = new URLSearchParams(),
+                { executeInfo = {}, instance = {} } = ctx,
+                body, headers: any = { "X-Requested-With": "XMLHttpRequest" },
+                { timeout = 5000, headers: originHeaders = {}, type = "", fetch: fetchOptions = {} } = executeInfo.settings || {},
+                fullPath = this.getFullPath(instance as any, executeInfo);
 
             // 根据type来设置不同的header
             switch (type) {
@@ -51,13 +51,15 @@ export class FetchEngine extends BaseEngine {
                 }
             }
 
-            // 发送请求
-            ctx.result = await fetchDec(fetch(this.getFullPath(instance as any, executeInfo), Object.assign({}, {
+            const fetchFunc: () => Promise<any> = fetch.bind(fetch, fullPath, Object.assign({}, {
                 body: ["GET", "OPTIONS", "HEAD"].indexOf((instance.method as any).toUpperCase()) === -1 ? body : null,
                 credentials: "same-origin",
                 headers: headers,
                 method: instance.method as any,
-            }, fetchOptions)), timeout);
+            }, fetchOptions));
+
+            // 发送请求
+            ctx.result = await fetchDec(fetchCacheDec(fetchFunc, executeInfo, fullPath), timeout);
 
             await next();
         });
