@@ -2,6 +2,11 @@
 
 使用fetch来调用接口的engine。
 
+## 支持的设置
+
+1. settings.timeout 设置超时时间，默认为5s。
+2. settings.cache   设置缓存，key为fullPath+method，类型为Promise。没有持久化。
+
 ## demo
 
 ```typescript
@@ -21,6 +26,9 @@
         if (ctx.result.status !== 200) {
             throw new Error(ctx.result.statusText);
         }
+
+        // 这里需要clone一个fetch，不然多次调用会报错（body stream already read）
+        ctx.result = await ctx.result.clone();
         ctx.result = await ctx.result.json();
 
         if (ctx.result.code !== 200) {
