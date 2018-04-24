@@ -43,3 +43,7 @@
     proxy.addEngines({"react":reactEngine});
 
 ```
+
+## Licence
+
+MIT
