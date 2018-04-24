@@ -10,8 +10,8 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 const modelproxy_1 = require("modelproxy");
 const fetch = require("isomorphic-fetch");
-const fetch_decorator_1 = require("./fetch.decorator");
 const fetch_cache_1 = require("./fetch.cache");
+const fetch_decorator_1 = require("./fetch.decorator");
 const defaultHeaders = {
     "Accept": "application/json",
     "Content-Type": "application/json"

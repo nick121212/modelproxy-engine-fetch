@@ -1,7 +1,7 @@
 {
   "name": "modelproxy-engine-fetch",
   "version": "1.0.6",
-  "description": "",
+  "description": "modelproxy中fetch的engine",
   "main": "out/fetch.engine.js",
   "scripts": {
     "test": "echo \"Error: no test specified\"",

@@ -1,7 +1,9 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-const modelproxy_1 = require("modelproxy");
-const promiseFactory = new modelproxy_1.BaseFactory();
+
+import { BaseFactory } from "modelproxy";
+import { IExecute } from "modelproxy/out/models/execute";
+
+const promiseFactory = new BaseFactory<Promise<any>>();
+
 /**
  * 为fetch增加cache的功能
  * 返回新的promise
@@ -10,16 +12,22 @@ const promiseFactory = new modelproxy_1.BaseFactory();
  * @param fullPath     {string}       请求路径
  * @returns {Promise<any>}
  */
-exports.fetchCacheDec = (fetchPromise, options, fullPath) => {
-    const { cache = false } = options.settings || {}, { method = "" } = options.instance || {}, proKey = fullPath + method;
+export const fetchCacheDec = (fetchPromise: () => Promise<any>, options: IExecute, fullPath: string) => {
+    const { cache = false } = options.settings || {},
+        { method = "" } = options.instance || {},
+        proKey = fullPath + method;
+
     if (!cache) {
         return fetchPromise();
     }
+
     const promiseInCache = promiseFactory.get(proKey);
+
     if (promiseInCache) {
         return promiseInCache;
     }
+
     promiseFactory.add(proKey, fetchPromise());
-    return promiseFactory.get(proKey);
+
+    return promiseFactory.get(proKey) as Promise<any>;
 };
-//# sourceMappingURL=fetch.cache.js.map

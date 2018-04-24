@@ -3,8 +3,8 @@ import { IProxyCtx } from "modelproxy/out/models/proxyctx";
 import { IInterfaceModel } from "modelproxy/out/models/interface";
 import * as fetch from "isomorphic-fetch";
 
-import { fetchDec } from "./fetch.decorator";
 import { fetchCacheDec } from "./fetch.cache";
+import { fetchDec } from "./fetch.decorator";
 
 const defaultHeaders = {
     "Accept": "application/json",
